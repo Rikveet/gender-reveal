@@ -20,10 +20,24 @@ const SHAKE_AT = 1.3; // it hangs upside down and shakes the letter out
 const REL = 3.6; // letter is released
 const FLY = 2.1; // letter tumbles to the front and rights itself
 
-const { damp, clamp, lerp, smoothstep: smooth, smootherstep, degToRad } = THREE.MathUtils;
+const {
+  damp,
+  clamp,
+  lerp,
+  smoothstep: smooth,
+  smootherstep,
+  degToRad,
+} = THREE.MathUtils;
 
 /* ---------------- Invite texture (landscape) ---------------- */
-function drawInvite(c: HTMLCanvasElement, d: string, b: string, names: string, address: string[], reveal: Reveal) {
+function drawInvite(
+  c: HTMLCanvasElement,
+  d: string,
+  b: string,
+  names: string,
+  address: string[],
+  reveal: Reveal,
+) {
   if (reveal) return drawReveal(c, d, b, names, reveal);
   const g = c.getContext("2d")!;
   const w = c.width;
@@ -33,7 +47,14 @@ function drawInvite(c: HTMLCanvasElement, d: string, b: string, names: string, a
   bg.addColorStop(1, "#e6cd98");
   g.fillStyle = bg;
   g.fillRect(0, 0, w, h);
-  const vg = g.createRadialGradient(w / 2, h / 2, h * 0.3, w / 2, h / 2, w * 0.62);
+  const vg = g.createRadialGradient(
+    w / 2,
+    h / 2,
+    h * 0.3,
+    w / 2,
+    h / 2,
+    w * 0.62,
+  );
   vg.addColorStop(0, "rgba(120,80,20,0)");
   vg.addColorStop(1, "rgba(120,80,20,0.4)");
   g.fillStyle = vg;
@@ -55,7 +76,13 @@ function drawInvite(c: HTMLCanvasElement, d: string, b: string, names: string, a
     g.closePath();
     g.fill();
   };
-  for (const [cx, cy] of [[68, 68], [w - 68, 68], [68, h - 68], [w - 68, h - 68]]) star(cx, cy, 30);
+  for (const [cx, cy] of [
+    [68, 68],
+    [w - 68, 68],
+    [68, h - 68],
+    [w - 68, h - 68],
+  ])
+    star(cx, cy, 30);
   for (let i = 0; i < 90; i++) {
     g.fillStyle = `rgba(110,70,20,${Math.random() * 0.05})`;
     g.fillRect(Math.random() * w, Math.random() * h, 2 + Math.random() * 40, 1);
@@ -63,13 +90,27 @@ function drawInvite(c: HTMLCanvasElement, d: string, b: string, names: string, a
 
   const BURG = "#740001";
   const INK = "#2b1a0e";
-  const body = (px: number, it = false) => `${it ? "italic " : ""}${px}px ${b}, Georgia, serif`;
-  const text = (t: string, x: number, y: number, font: string, color: string) => {
+  const body = (px: number, it = false) =>
+    `${it ? "italic " : ""}${px}px ${b}, Georgia, serif`;
+  const text = (
+    t: string,
+    x: number,
+    y: number,
+    font: string,
+    color: string,
+  ) => {
     g.font = font;
     g.fillStyle = color;
     g.fillText(t, x, y);
   };
-  const wrap = (t: string, x: number, y: number, font: string, max: number, lh: number) => {
+  const wrap = (
+    t: string,
+    x: number,
+    y: number,
+    font: string,
+    max: number,
+    lh: number,
+  ) => {
     g.font = font;
     g.fillStyle = INK;
     let line = "";
@@ -110,7 +151,11 @@ function drawInvite(c: HTMLCanvasElement, d: string, b: string, names: string, a
   const LX = 480;
   wrap(
     "We're expecting, and we'd love for you to celebrate with us as we find out if it's a boy or a girl. Join us for food, drinks, and good company.",
-    LX, 480, body(44), 700, 66,
+    LX,
+    480,
+    body(44),
+    700,
+    66,
   );
   text("With love,", LX, 820, body(44), INK);
   text(names, LX, 884, body(50, true), INK);
@@ -128,11 +173,33 @@ function drawInvite(c: HTMLCanvasElement, d: string, b: string, names: string, a
 
 /* ---------------- Reveal letter (from 25 Oct) ---------------- */
 const THEMES = {
-  boy: { a: "#eaf3fd", b: "#b7d2f0", line: "#5a8fd0", main: "#1f4a82", ink: "#16304f", word: "Boy", tint: "40,90,170" },
-  girl: { a: "#fdebf2", b: "#f0bace", line: "#d9688a", main: "#8a2146", ink: "#4a1426", word: "Girl", tint: "180,60,100" },
+  boy: {
+    a: "#eaf3fd",
+    b: "#b7d2f0",
+    line: "#5a8fd0",
+    main: "#1f4a82",
+    ink: "#16304f",
+    word: "Boy",
+    tint: "40,90,170",
+  },
+  girl: {
+    a: "#fdebf2",
+    b: "#f0bace",
+    line: "#d9688a",
+    main: "#8a2146",
+    ink: "#4a1426",
+    word: "Girl",
+    tint: "180,60,100",
+  },
 };
 
-function drawReveal(c: HTMLCanvasElement, d: string, b: string, names: string, reveal: "boy" | "girl") {
+function drawReveal(
+  c: HTMLCanvasElement,
+  d: string,
+  b: string,
+  names: string,
+  reveal: "boy" | "girl",
+) {
   const g = c.getContext("2d")!;
   const w = c.width;
   const h = c.height;
@@ -142,7 +209,14 @@ function drawReveal(c: HTMLCanvasElement, d: string, b: string, names: string, r
   bg.addColorStop(1, th.b);
   g.fillStyle = bg;
   g.fillRect(0, 0, w, h);
-  const vg = g.createRadialGradient(w / 2, h / 2, h * 0.3, w / 2, h / 2, w * 0.62);
+  const vg = g.createRadialGradient(
+    w / 2,
+    h / 2,
+    h * 0.3,
+    w / 2,
+    h / 2,
+    w * 0.62,
+  );
   vg.addColorStop(0, `rgba(${th.tint},0)`);
   vg.addColorStop(1, `rgba(${th.tint},0.28)`);
   g.fillStyle = vg;
@@ -165,11 +239,17 @@ function drawReveal(c: HTMLCanvasElement, d: string, b: string, names: string, r
     g.closePath();
     g.fill();
   };
-  for (const [cx, cy] of [[68, 68], [w - 68, 68], [68, h - 68], [w - 68, h - 68]]) star(cx, cy, 30, th.line);
+  for (const [cx, cy] of [
+    [68, 68],
+    [w - 68, 68],
+    [68, h - 68],
+    [w - 68, h - 68],
+  ])
+    star(cx, cy, 30, th.line);
 
   // confetti around the edges (seeded so repaints match)
   let seed = 7;
-  const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+  const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
   for (let i = 0; i < 70; i++) {
     const x = 100 + rnd() * (w - 200);
     const y = 100 + rnd() * (h - 200);
@@ -249,7 +329,9 @@ function useInvite(names: string, address: string[], reveal: Reveal) {
       document.fonts.load(`700 46px ${d}`),
       document.fonts.load(`44px ${b}`),
       document.fonts.load(`italic 44px ${b}`),
-    ]).then(paint).catch(() => {});
+    ])
+      .then(paint)
+      .catch(() => {});
   }, [canvas, tex, names, address, reveal]);
 
   return tex;
@@ -297,7 +379,8 @@ function Stars() {
     group.current.rotation.x += dt * 0.004;
     const f = clamp((t - 0.4) / 2.5, 0, 1);
     if (mats.current[0]) mats.current[0].opacity = f * 0.9;
-    if (mats.current[1]) mats.current[1].opacity = f * (0.65 + 0.35 * Math.sin(t * 1.7));
+    if (mats.current[1])
+      mats.current[1].opacity = f * (0.65 + 0.35 * Math.sin(t * 1.7));
   });
 
   return (
@@ -351,23 +434,41 @@ const glow = () => {
   g.fillRect(0, 0, 128, 128);
   return (glowTex = toTex(c));
 };
-const grain = (g: CanvasRenderingContext2D, w: number, h: number, a: number) => {
+const grain = (
+  g: CanvasRenderingContext2D,
+  w: number,
+  h: number,
+  a: number,
+) => {
   for (let i = 0; i < (w * h) / 80; i++) {
     g.fillStyle = `rgba(${Math.random() < 0.5 ? "60,35,10" : "255,245,210"},${Math.random() * a})`;
     g.fillRect(Math.random() * w, Math.random() * h, 1 + Math.random() * 2, 1);
   }
 };
-const fillV = (g: CanvasRenderingContext2D, w: number, h: number, a: string, b: string) => {
+const fillV = (
+  g: CanvasRenderingContext2D,
+  w: number,
+  h: number,
+  a: string,
+  b: string,
+) => {
   const gr = g.createLinearGradient(0, 0, w * 0.3, h);
   gr.addColorStop(0, a);
   gr.addColorStop(1, b);
   g.fillStyle = gr;
   g.fillRect(0, 0, w, h);
 };
-const mapUV = (geo: THREE.BufferGeometry, ox: number, oy: number, w: number, h: number) => {
+const mapUV = (
+  geo: THREE.BufferGeometry,
+  ox: number,
+  oy: number,
+  w: number,
+  h: number,
+) => {
   const p = geo.attributes.position;
   const uv = geo.attributes.uv;
-  for (let i = 0; i < p.count; i++) uv.setXY(i, (p.getX(i) - ox) / w, (p.getY(i) - oy) / h);
+  for (let i = 0; i < p.count; i++)
+    uv.setXY(i, (p.getX(i) - ox) / w, (p.getY(i) - oy) / h);
   uv.needsUpdate = true;
   return geo;
 };
@@ -412,9 +513,30 @@ function useEnvTextures() {
         g.closePath();
         g.fill();
       };
-      tri([[0, 0], [TW / 2, tip], [0, TH]], "rgba(120,80,30,0.16)");
-      tri([[TW, 0], [TW / 2, tip], [TW, TH]], "rgba(90,55,20,0.24)");
-      tri([[0, TH], [TW / 2, tip], [TW, TH]], "rgba(255,240,200,0.20)");
+      tri(
+        [
+          [0, 0],
+          [TW / 2, tip],
+          [0, TH],
+        ],
+        "rgba(120,80,30,0.16)",
+      );
+      tri(
+        [
+          [TW, 0],
+          [TW / 2, tip],
+          [TW, TH],
+        ],
+        "rgba(90,55,20,0.24)",
+      );
+      tri(
+        [
+          [0, TH],
+          [TW / 2, tip],
+          [TW, TH],
+        ],
+        "rgba(255,240,200,0.20)",
+      );
       g.strokeStyle = "rgba(255,238,190,0.75)";
       g.lineWidth = 4;
       g.beginPath();
@@ -497,18 +619,34 @@ function Backdrop({ pulse }: { pulse: MutableRefObject<number> }) {
   useFrame(({ clock }) => {
     const t = clock.elapsedTime;
     const m = halo.current.material as THREE.SpriteMaterial;
-    m.opacity = clamp((t - 0.3) / 2, 0, 1) * (0.32 + 0.05 * Math.sin(t * 1.3) + pulse.current * 0.35);
+    m.opacity =
+      clamp((t - 0.3) / 2, 0, 1) *
+      (0.32 + 0.05 * Math.sin(t * 1.3) + pulse.current * 0.35);
     halo.current.scale.setScalar(13 + pulse.current * 4);
   });
   return (
     <>
       {NEBULAE.map(([x, y, z, s, c, o], i) => (
         <sprite key={i} position={[x, y, z]} scale={[s, s, 1]}>
-          <spriteMaterial map={map} color={c} opacity={o} transparent depthWrite={false} blending={THREE.AdditiveBlending} />
+          <spriteMaterial
+            map={map}
+            color={c}
+            opacity={o}
+            transparent
+            depthWrite={false}
+            blending={THREE.AdditiveBlending}
+          />
         </sprite>
       ))}
       <sprite ref={halo} position={[0, 0.6, -3]}>
-        <spriteMaterial map={map} color="#e0a640" opacity={0} transparent depthWrite={false} blending={THREE.AdditiveBlending} />
+        <spriteMaterial
+          map={map}
+          color="#e0a640"
+          opacity={0}
+          transparent
+          depthWrite={false}
+          blending={THREE.AdditiveBlending}
+        />
       </sprite>
     </>
   );
@@ -521,7 +659,12 @@ function Sparks({ burst }: { burst: Burst }) {
   const pts = useRef<THREE.Points>(null!);
   const map = useMemo(glow, []);
   const st = useMemo(
-    () => ({ pos: new Float32Array(NS * 3), vel: new Float32Array(NS * 3), col: new Float32Array(NS * 3), life: new Float32Array(NS) }),
+    () => ({
+      pos: new Float32Array(NS * 3),
+      vel: new Float32Array(NS * 3),
+      col: new Float32Array(NS * 3),
+      life: new Float32Array(NS),
+    }),
     [],
   );
   useFrame((_, dt) => {
@@ -532,7 +675,14 @@ function Sparks({ burst }: { burst: Burst }) {
         const a = Math.random() * Math.PI * 2;
         const sp = 1.5 + Math.random() * 5;
         st.pos.set([at.x, at.y, at.z], i * 3);
-        st.vel.set([Math.cos(a) * sp, Math.sin(a) * sp * 0.8 + 1.5, (Math.random() - 0.3) * sp], i * 3);
+        st.vel.set(
+          [
+            Math.cos(a) * sp,
+            Math.sin(a) * sp * 0.8 + 1.5,
+            (Math.random() - 0.3) * sp,
+          ],
+          i * 3,
+        );
         st.life[i] = 0.6 + Math.random() * 0.9;
       }
     }
@@ -561,7 +711,15 @@ function Sparks({ burst }: { burst: Burst }) {
         <bufferAttribute attach="attributes-position" args={[st.pos, 3]} />
         <bufferAttribute attach="attributes-color" args={[st.col, 3]} />
       </bufferGeometry>
-      <pointsMaterial map={map} size={0.4} vertexColors transparent depthWrite={false} blending={THREE.AdditiveBlending} sizeAttenuation />
+      <pointsMaterial
+        map={map}
+        size={0.4}
+        vertexColors
+        transparent
+        depthWrite={false}
+        blending={THREE.AdditiveBlending}
+        sizeAttenuation
+      />
     </points>
   );
 }
@@ -584,7 +742,15 @@ const tmpV = new THREE.Vector3();
 const tmpV2 = new THREE.Vector3();
 const tmpDir = new THREE.Vector3();
 
-function Stage({ opened, hovered, onOpen, onSettled, names, address, reveal }: SceneProps) {
+function Stage({
+  opened,
+  hovered,
+  onOpen,
+  onSettled,
+  names,
+  address,
+  reveal,
+}: SceneProps) {
   const { viewport, camera, size } = useThree();
   const stageScale = Math.min(0.85, (viewport.width * 0.7) / W);
 
@@ -594,10 +760,16 @@ function Stage({ opened, hovered, onOpen, onSettled, names, address, reveal }: S
   const inner = useRef<THREE.Mesh>(null!);
   const big = useRef<THREE.Mesh>(null!);
   const openAt = useRef<number | null>(null);
-  const start = useRef<{ x: number; y: number; rx: number; rz: number } | null>(null);
+  const start = useRef<{ x: number; y: number; rx: number; rz: number } | null>(
+    null,
+  );
   const released = useRef(false);
   const done = useRef(false);
-  const rel = useRef({ p: new THREE.Vector3(), q: new THREE.Quaternion(), s: new THREE.Vector3() });
+  const rel = useRef({
+    p: new THREE.Vector3(),
+    q: new THREE.Quaternion(),
+    s: new THREE.Vector3(),
+  });
   const v = useRef({ angle: 0, shake: 0, seal: 1 });
   const burst: Burst = useRef(null);
   const pulse = useRef(0);
@@ -647,7 +819,12 @@ function Stage({ opened, hovered, onOpen, onSettled, names, address, reveal }: S
     g.visible = t >= FALL_AT - 0.05;
 
     const shaking = t > FALL_AT + FALL_DUR + 0.9 && !opened && !hovered.current;
-    s.shake = damp(s.shake, shaking ? Math.max(0, Math.sin(t * 8)) * 0.07 : 0, 12, dt);
+    s.shake = damp(
+      s.shake,
+      shaking ? Math.max(0, Math.sin(t * 8)) * 0.07 : 0,
+      12,
+      dt,
+    );
     rz += Math.sin(t * 40) * s.shake;
 
     let ly = 0;
@@ -661,9 +838,12 @@ function Stage({ opened, hovered, onOpen, onSettled, names, address, reveal }: S
       const e = smootherstep(clamp((ot - LIFT_AT) / LIFT_DUR, 0, 1), 0, 1);
       const arc = Math.sin(e * Math.PI);
       const ta = ot - REL;
-      const amp = smooth(ot, SHAKE_AT - 0.2, SHAKE_AT + 0.7) * (ta < 0 ? 1 : Math.exp(-ta * 3.5));
+      const amp =
+        smooth(ot, SHAKE_AT - 0.2, SHAKE_AT + 0.7) *
+        (ta < 0 ? 1 : Math.exp(-ta * 3.5));
       let px = lerp(a.x, 0, e) + arc * 0.9 + Math.sin(ot * 9) * 0.1 * amp;
-      let py = lerp(a.y, 1.55, e) + arc * 0.7 + Math.sin(ot * 7 + 2) * 0.06 * amp;
+      let py =
+        lerp(a.y, 1.55, e) + arc * 0.7 + Math.sin(ot * 7 + 2) * 0.06 * amp;
       let pz = lerp(0, 1.8, e) + arc * 0.9;
       let rZ = lerp(a.rz, Math.PI, e) + Math.sin(ot * 8 + 1) * 0.14 * amp;
       if (ta > 0) {
@@ -673,12 +853,21 @@ function Stage({ opened, hovered, onOpen, onSettled, names, address, reveal }: S
         rZ += ta * 2.2;
       }
       g.position.set(px, py, pz);
-      g.rotation.set(lerp(a.rx, -0.3, e) + Math.sin(ot * 6) * 0.08 * amp, e * Math.PI * 2, rZ);
-      g.scale.setScalar(ta > 0 ? Math.max(1 - smooth(ta, 0, 1.9) * 0.97, 0.0001) : 1);
+      g.rotation.set(
+        lerp(a.rx, -0.3, e) + Math.sin(ot * 6) * 0.08 * amp,
+        e * Math.PI * 2,
+        rZ,
+      );
+      g.scale.setScalar(
+        ta > 0 ? Math.max(1 - smooth(ta, 0, 1.9) * 0.97, 0.0001) : 1,
+      );
       g.visible = ta < 2;
 
       const sp = clamp((ot - SHAKE_AT) / (REL - SHAKE_AT), 0, 1);
-      ly = 0.3 * smooth(ot, 0.8, SHAKE_AT) + 1.6 * smooth(sp, 0, 1) + (0.5 + 0.5 * Math.sin(ot * 7)) * 0.1 * amp * (1 - sp * sp);
+      ly =
+        0.3 * smooth(ot, 0.8, SHAKE_AT) +
+        1.6 * smooth(sp, 0, 1) +
+        (0.5 + 0.5 * Math.sin(ot * 7)) * 0.1 * amp * (1 - sp * sp);
       inner.current.rotation.z = Math.sin(ot * 6) * 0.05 * amp;
     }
 
@@ -697,7 +886,11 @@ function Stage({ opened, hovered, onOpen, onSettled, names, address, reveal }: S
     if (ot >= REL && !released.current) {
       released.current = true;
       inner.current.updateWorldMatrix(true, false);
-      inner.current.matrixWorld.decompose(rel.current.p, rel.current.q, rel.current.s);
+      inner.current.matrixWorld.decompose(
+        rel.current.p,
+        rel.current.q,
+        rel.current.s,
+      );
       bg.position.copy(rel.current.p);
       bg.quaternion.copy(rel.current.q);
       bg.scale.copy(rel.current.s);
@@ -705,7 +898,20 @@ function Stage({ opened, hovered, onOpen, onSettled, names, address, reveal }: S
       inner.current.visible = false;
       burst.current = rel.current.p.clone();
     }
-    pulse.current = damp(pulse.current, ot < 0 ? 0 : ot < SHAKE_AT ? 0.3 : ot < REL ? 0.8 : ot < REL + 0.6 ? 1.4 : 0.3, 6, dt);
+    pulse.current = damp(
+      pulse.current,
+      ot < 0
+        ? 0
+        : ot < SHAKE_AT
+          ? 0.3
+          : ot < REL
+            ? 0.8
+            : ot < REL + 0.6
+              ? 1.4
+              : 0.3,
+      6,
+      dt,
+    );
 
     /* letter tumbles to the front, then rights itself and floats upright */
     if (released.current) {
@@ -718,13 +924,20 @@ function Stage({ opened, hovered, onOpen, onSettled, names, address, reveal }: S
       const asp = size.width / size.height;
       const fs = Math.min((0.7 * k * 5.5) / LH, (0.92 * k * 5.5 * asp) / LW);
       camera.getWorldDirection(tmpDir);
-      tmpV.copy(camera.position).addScaledVector(tmpDir, 5.5).addScaledVector(camera.up, 0.25 + Math.sin(t * 1.6) * 0.04 * e);
+      tmpV
+        .copy(camera.position)
+        .addScaledVector(tmpDir, 5.5)
+        .addScaledVector(camera.up, 0.25 + Math.sin(t * 1.6) * 0.04 * e);
       tmpV2.lerpVectors(r.p, tmpV, e);
       tmpV2.y -= 0.8 * Math.sin(Math.PI * p) * (1 - p);
       tmpV2.x += Math.sin(p * Math.PI * 3) * 0.5 * (1 - p);
       bg.position.copy(tmpV2);
       tmpQ.slerpQuaternions(r.q, camera.quaternion, e);
-      tmpE.set(Math.sin(p * Math.PI * 3.5) * 0.7 * w, Math.cos(p * Math.PI * 3) * 0.9 * w, Math.sin(p * Math.PI * 2) * 0.4 * w);
+      tmpE.set(
+        Math.sin(p * Math.PI * 3.5) * 0.7 * w,
+        Math.cos(p * Math.PI * 3) * 0.9 * w,
+        Math.sin(p * Math.PI * 2) * 0.4 * w,
+      );
       bg.quaternion.copy(tmpQ.multiply(tmpQ2.setFromEuler(tmpE)));
       bg.scale.setScalar(lerp(r.s.x, fs, e));
       if (ot > REL + FLY + 0.2 && !done.current) {
@@ -735,7 +948,13 @@ function Stage({ opened, hovered, onOpen, onSettled, names, address, reveal }: S
   });
 
   const letterGeo = <planeGeometry args={[LW, LH]} />;
-  const letterMat = <meshBasicMaterial map={invite} side={THREE.DoubleSide} toneMapped={false} />;
+  const letterMat = (
+    <meshBasicMaterial
+      map={invite}
+      side={THREE.DoubleSide}
+      toneMapped={false}
+    />
+  );
 
   return (
     <>
@@ -763,7 +982,11 @@ function Stage({ opened, hovered, onOpen, onSettled, names, address, reveal }: S
           </mesh>
           <mesh>
             <planeGeometry args={[W, H]} />
-            <meshStandardMaterial map={T.back} roughness={0.9} side={THREE.BackSide} />
+            <meshStandardMaterial
+              map={T.back}
+              roughness={0.9}
+              side={THREE.BackSide}
+            />
           </mesh>
           <mesh ref={inner} position={[0, 0, 0.03]} scale={0.5}>
             {letterGeo}
@@ -774,10 +997,18 @@ function Stage({ opened, hovered, onOpen, onSettled, names, address, reveal }: S
           </mesh>
           <group ref={flap} position={[0, H / 2, 0.09]}>
             <mesh geometry={flapGeo}>
-              <meshStandardMaterial map={T.flapFront} roughness={0.85} side={THREE.FrontSide} />
+              <meshStandardMaterial
+                map={T.flapFront}
+                roughness={0.85}
+                side={THREE.FrontSide}
+              />
             </mesh>
             <mesh geometry={flapGeo}>
-              <meshStandardMaterial map={T.flapBack} roughness={0.9} side={THREE.BackSide} />
+              <meshStandardMaterial
+                map={T.flapBack}
+                roughness={0.9}
+                side={THREE.BackSide}
+              />
             </mesh>
             <group ref={seal} position={[0, -FLAP + 0.1, 0.03]}>
               <mesh rotation={[Math.PI / 2, 0, 0]}>
@@ -786,7 +1017,11 @@ function Stage({ opened, hovered, onOpen, onSettled, names, address, reveal }: S
               </mesh>
               <mesh position={[0, 0, 0.021]}>
                 <circleGeometry args={[0.2, 48]} />
-                <meshStandardMaterial map={T.seal} roughness={0.3} metalness={0.15} />
+                <meshStandardMaterial
+                  map={T.seal}
+                  roughness={0.3}
+                  metalness={0.15}
+                />
               </mesh>
             </group>
           </group>
@@ -813,11 +1048,19 @@ function Rig() {
 
 export default function Scene(props: SceneProps) {
   return (
-    <Canvas className="!absolute inset-0" camera={{ position: [0, 3.8, 9], fov: 40, near: 0.5, far: 400 }} dpr={[1, 2]}>
+    <Canvas
+      className="!absolute inset-0"
+      camera={{ position: [0, 3.8, 9], fov: 40, near: 0.5, far: 400 }}
+      dpr={[1, 2]}
+    >
       <color attach="background" args={["#000000"]} />
       <ambientLight intensity={1} />
       <directionalLight position={[3, 5, 5]} intensity={2.2} color="#ffe6b8" />
-      <directionalLight position={[-4, 3, -5]} intensity={1.5} color="#8fa0ff" />
+      <directionalLight
+        position={[-4, 3, -5]}
+        intensity={1.5}
+        color="#8fa0ff"
+      />
       <Rig />
       <Stars />
       <Stage {...props} />
