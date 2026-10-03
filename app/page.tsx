@@ -82,7 +82,7 @@ export default function Page() {
             rel="noopener noreferrer"
             className="rounded-[3px] border border-[#f3d98b]/70 bg-linear-to-b from-[#f7e19b] via-[#d9a94c] to-[#a6701e] px-6 py-3.5 font-display text-sm font-black tracking-wide text-[#3a0a0a] shadow-[0_0_0_3px_#2b1a0e,0_0_0_4px_#d4a24a,0_8px_28px_rgba(212,162,74,0.35)] transition hover:-translate-y-0.5 hover:brightness-110"
           >
-            RSVP and add to Google Calendar
+            Add to your Calendar
           </a>
           <a
             href={mapsUrl}
